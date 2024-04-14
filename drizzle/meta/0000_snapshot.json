@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "43ff8418-0012-49d3-b6e6-2e714a4cac2a",
+  "id": "791f5717-c155-4cdc-8af6-344b33065a7c",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "games": {
@@ -16,11 +16,11 @@
         },
         "started": {
           "name": "started",
-          "type": "integer",
+          "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "(CURRENT_TIMESTAMP)"
+          "default": "( strftime('%Y-%m-%dT%H:%M:%SZ') )"
         },
         "open": {
           "name": "open",

@@ -21,7 +21,28 @@ export async function getGameByCode(code: string) {
   return result;
 }
 
-export async function createGame(game: CreateGameInput) {
-  const [result] = await db.insert(games).values(game).returning();
+export async function createGame(game: {
+  owner: number;
+  label?: string;
+  desc?: string;
+  location?: string;
+}) {
+  const random = new Uint32Array(10);
+  crypto.getRandomValues(random);
+
+  const hasher = new Bun.CryptoHasher("sha256");
+  hasher.update(`${game.desc}${game.label}${game.location}`);
+  hasher.update(random);
+
+  const code = hasher.digest("hex").substring(0, 5);
+
+  const [result] = await db
+    .insert(games)
+    .values({
+      code,
+      ...game,
+    })
+    .returning();
+
   return result;
 }

@@ -1,10 +1,10 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { validator } from "hono/validator";
 import { sign, jwt } from "hono/jwt";
 import { HTTPException } from "hono/http-exception";
 import { checkEmailAndPassword, createUser, isUserAlready } from "./service";
 import getUser from "./getUser";
+import { zValidator } from "@hono/zod-validator";
 
 const auth = new Hono();
 
@@ -13,15 +13,7 @@ const authSchema = z.object({
   password: z.string().min(3),
 });
 
-const authValidator = validator("json", (value, c) => {
-  const parsed = authSchema.safeParse(value);
-  if (!parsed.success) {
-    throw new HTTPException(400);
-  }
-  return parsed.data;
-});
-
-auth.post("/register", authValidator, async (c) => {
+auth.post("/register", zValidator("json", authSchema), async (c) => {
   const { email, password } = c.req.valid("json");
 
   if (await isUserAlready(email)) {
@@ -32,7 +24,7 @@ auth.post("/register", authValidator, async (c) => {
   return c.json({ email: user.email, id: user.id });
 });
 
-auth.post("/login", authValidator, async (c) => {
+auth.post("/login", zValidator("json", authSchema), async (c) => {
   const { email, password } = c.req.valid("json");
   const user = await checkEmailAndPassword(email, password);
 

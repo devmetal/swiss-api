@@ -8,6 +8,7 @@
     "test:watch": "bun test --env-file=.env.test --preload ./test.setup.ts --watch"
   },
   "dependencies": {
+    "@hono/zod-validator": "^0.2.1",
     "drizzle-orm": "^0.30.7",
     "hono": "^4.2.3",
     "zod": "^3.22.4"

@@ -9,9 +9,9 @@ export const users = sqliteTable("users", {
 
 export const games = sqliteTable("games", {
   id: integer("id").primaryKey(),
-  started: integer("started", { mode: "timestamp" })
-    .default(sql`(CURRENT_TIMESTAMP)`)
-    .notNull(),
+  started: text("started")
+    .notNull()
+    .default(sql`( strftime('%Y-%m-%dT%H:%M:%SZ') )`),
   open: integer("open", { mode: "boolean" }).default(true),
   location: text("location"),
   label: text("label"),

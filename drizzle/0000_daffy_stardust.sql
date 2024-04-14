@@ -1,6 +1,6 @@
 CREATE TABLE `games` (
 	`id` integer PRIMARY KEY NOT NULL,
-	`started` integer DEFAULT (CURRENT_TIMESTAMP) NOT NULL,
+	`started` text DEFAULT ( strftime('%Y-%m-%dT%H:%M:%SZ') ) NOT NULL,
 	`open` integer DEFAULT true,
 	`location` text,
 	`label` text,
