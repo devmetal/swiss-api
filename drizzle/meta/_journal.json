@@ -1,0 +1,20 @@
+{
+  "version": "5",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1713113793526,
+      "tag": "0000_real_blue_shield",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1713115781350,
+      "tag": "0001_wonderful_ego",
+      "breakpoints": true
+    }
+  ]
+}
