@@ -23,3 +23,4 @@ export const games = sqliteTable("games", {
 });
 
 export type User = typeof users.$inferSelect;
+export type CreateGameInput = typeof games.$inferInsert;
