@@ -104,4 +104,20 @@ game.patch(
   }
 );
 
+game.patch(
+  "/:id/close",
+  getUser,
+  zValidator("param", idParamsSchema),
+  async (c) => {
+    const { id } = c.req.valid("param");
+    const result = await updateGame(c.get("user").id, id, { closed: true });
+
+    if (!result) {
+      throw new HTTPException(404);
+    }
+
+    return c.json(result);
+  }
+);
+
 export default game;
