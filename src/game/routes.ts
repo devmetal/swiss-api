@@ -22,7 +22,6 @@ game.get(
   zValidator("param", z.object({ code: z.string().min(5).max(5) })),
   async (c) => {
     const { code } = c.req.valid("param");
-
     const result = await getGameByCode(code);
 
     if (!result) {
