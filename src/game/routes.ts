@@ -2,7 +2,13 @@ import { Hono } from "hono";
 import { jwt } from "hono/jwt";
 import { zValidator } from "@hono/zod-validator";
 import getUser from "@/auth/getUser";
-import { createGame, getGameByCode, getGamesByUserId } from "./service";
+import {
+  createGame,
+  getGameByCode,
+  getGameByIdAndUserId,
+  getGamesByUserId,
+  updateGame,
+} from "./service";
 import { z } from "zod";
 import { HTTPException } from "hono/http-exception";
 
@@ -20,6 +26,13 @@ const patchGameSchema = z.object({
   closed: z.boolean().optional(),
 });
 
+const idParamsSchema = z.object({
+  id: z
+    .string()
+    .transform((v) => Number(v))
+    .refine((v) => Number.isInteger(v)),
+});
+
 const game = new Hono();
 
 game.use(jwt({ secret: Bun.env.SECRET }));
@@ -29,6 +42,22 @@ game.get("/", getUser, async (c) => {
   const games = await getGamesByUserId(c.get("user").id);
   return c.json(games);
 });
+
+game.get(
+  "/mine/:id",
+  getUser,
+  zValidator("param", idParamsSchema),
+  async (c) => {
+    const { id } = c.req.valid("param");
+    const result = await getGameByIdAndUserId(id, c.get("user").id);
+
+    if (!result) {
+      throw new HTTPException(404);
+    }
+
+    return c.json(result);
+  }
+);
 
 game.get(
   "/:code",
@@ -55,19 +84,23 @@ game.post("/", getUser, zValidator("json", postGameSchema), async (c) => {
 game.patch(
   "/:id",
   getUser,
-  zValidator(
-    "param",
-    z.object({
-      id: z
-        .string()
-        .transform((v) => Number(v))
-        .refine((v) => Number.isInteger(v)),
-    })
-  ),
+  zValidator("param", idParamsSchema),
   zValidator("json", patchGameSchema),
   async (c) => {
     const { id } = c.req.valid("param");
     const body = c.req.valid("json");
+
+    if (!Object.keys(body).length) {
+      throw new HTTPException(400);
+    }
+
+    const result = await updateGame(c.get("user").id, id, body);
+
+    if (!result) {
+      throw new HTTPException(404);
+    }
+
+    return c.json(result);
   }
 );
 
