@@ -1,6 +1,5 @@
 import { test, expect, beforeAll, describe } from "bun:test";
 import { app } from "@/index";
-import { createUser } from "./service";
 import { rest } from "@/test/helper";
 
 const register = rest(app)("/api/auth/register")(null);

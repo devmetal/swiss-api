@@ -3,7 +3,7 @@ import { type CreateGameInput, games } from "@/schema";
 import { and, eq } from "drizzle-orm";
 
 export async function getGamesByUserId(uid: number) {
-  const [result] = await db.select().from(games).where(eq(games.owner, uid));
+  const result = await db.select().from(games).where(eq(games.owner, uid));
   return result;
 }
 
