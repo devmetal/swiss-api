@@ -34,5 +34,3 @@ export const withYoga = createMiddleware(async (c, next) => {
     headers: headersObj,
   });
 });
-
-export default yoga;
