@@ -13,6 +13,7 @@ export const games = sqliteTable("games", {
     .notNull()
     .default(sql`( strftime('%Y-%m-%dT%H:%M:%SZ') )`),
   open: integer("open", { mode: "boolean" }).default(true),
+  closed: integer("closed", { mode: "boolean" }),
   location: text("location"),
   label: text("label"),
   desc: text("desc"),
@@ -25,3 +26,4 @@ export const games = sqliteTable("games", {
 export type User = typeof users.$inferSelect;
 export type Game = typeof games.$inferSelect;
 export type CreateGameInput = typeof games.$inferInsert;
+export type UpdateGameInput = Partial<typeof games.$inferInsert>;

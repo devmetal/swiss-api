@@ -1,5 +1,5 @@
 import { db } from "@/database";
-import { type CreateGameInput, games } from "@/schema";
+import { games, type UpdateGameInput } from "@/schema";
 import { and, eq } from "drizzle-orm";
 
 export async function getGamesByUserId(uid: number) {
@@ -21,20 +21,28 @@ export async function getGameByCode(code: string) {
   return result;
 }
 
+const genCode = (seed: string[]): string => {
+  const random = new Uint32Array(10);
+  crypto.getRandomValues(random);
+
+  const hasher = new Bun.CryptoHasher("sha256");
+  hasher.update(seed.join(""));
+  hasher.update(random);
+
+  return hasher.digest("hex").substring(0, 5);
+};
+
 export async function createGame(game: {
   owner: number;
   label?: string;
   desc?: string;
   location?: string;
 }) {
-  const random = new Uint32Array(10);
-  crypto.getRandomValues(random);
-
-  const hasher = new Bun.CryptoHasher("sha256");
-  hasher.update(`${game.desc}${game.label}${game.location}`);
-  hasher.update(random);
-
-  const code = hasher.digest("hex").substring(0, 5);
+  const code = genCode([
+    game.label ?? "",
+    game.desc ?? "",
+    game.location ?? "",
+  ]);
 
   const [result] = await db
     .insert(games)
@@ -42,6 +50,20 @@ export async function createGame(game: {
       code,
       ...game,
     })
+    .returning();
+
+  return result;
+}
+
+export async function updateGame(
+  uid: number,
+  gid: number,
+  game: UpdateGameInput
+) {
+  const [result] = await db
+    .update(games)
+    .set(game)
+    .where(and(eq(games.id, gid), eq(games.owner, uid)))
     .returning();
 
   return result;
