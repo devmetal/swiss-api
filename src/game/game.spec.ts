@@ -153,6 +153,7 @@ describe("/api/game", () => {
       [() => game1.id, { location: "t", label: "t", desc: 1 }, 400],
       [() => "", {}, 404],
       [() => "abd", {}, 400],
+      [() => 999, { label: "" }, 404],
     ] as const;
 
     test.each(cases)(
