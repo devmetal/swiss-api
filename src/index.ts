@@ -4,6 +4,7 @@ import { secureHeaders } from "hono/secure-headers";
 import { HTTPException } from "hono/http-exception";
 import auth from "./auth/routes";
 import game from "./game/routes";
+import { withYoga } from "./yoga";
 
 export const app = new Hono();
 
@@ -17,6 +18,7 @@ if (Bun.env.NODE_ENV !== "test") {
 
 app.route("/api/auth", auth);
 app.route("/api/game", game);
+app.use("/graphql", withYoga);
 
 app.onError((err, c) => {
   if (Bun.env.NODE_ENV !== "test") {

@@ -10,6 +10,8 @@
   "dependencies": {
     "@hono/zod-validator": "^0.2.1",
     "drizzle-orm": "^0.30.7",
+    "graphql": "^16.8.1",
+    "graphql-yoga": "^5.3.0",
     "hono": "^4.2.3",
     "zod": "^3.22.4"
   },
