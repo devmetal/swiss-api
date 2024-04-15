@@ -7,10 +7,6 @@ const register = rest(app)("/api/auth/register")(null);
 const login = rest(app)("/api/auth/login")(null);
 const me = rest(app)("/api/auth/me");
 
-beforeAll(async () => {
-  await createUser("test@test.com", "12345");
-});
-
 describe("POST /api/auth/register", () => {
   const cases = [
     ["email", "test1@test.com", "password", "12345", 200],
