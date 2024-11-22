@@ -3,19 +3,19 @@
     "dev": "bun run --hot src/index.ts",
     "db:generate": "drizzle-kit generate:sqlite --schema ./src/schema.ts",
     "db:migrate": "bun run migrate.ts",
-    "db:studio": "drizzle-kit studio",
+    "db:studio": "drizzle-kit studio --config ./drizzle.config.json",
     "test:ci": "bun test --env-file=.env.test --preload ./test.setup.ts",
     "test:watch": "bun test --env-file=.env.test --preload ./test.setup.ts --watch"
   },
   "dependencies": {
     "@hono/zod-validator": "^0.4.1",
-    "drizzle-orm": "^0.36.0",
-    "hono": "^4.6.8",
+    "drizzle-orm": "^0.36.3",
+    "hono": "^4.6.11",
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@types/bun": "^1.1.12",
+    "@types/bun": "^1.1.13",
     "better-sqlite3": "^11.5.0",
-    "drizzle-kit": "^0.27.0"
+    "drizzle-kit": "^0.28.1"
   }
 }

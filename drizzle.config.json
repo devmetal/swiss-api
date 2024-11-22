@@ -1,6 +1,6 @@
 {
   "schema": "./src/schema.ts",
-  "driver": "better-sqlite",
+  "dialect": "sqlite",
   "dbCredentials": {
     "url": "./sqlite.db"
   }
