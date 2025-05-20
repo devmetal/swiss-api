@@ -27,10 +27,8 @@ beforeAll(async () => {
 
 test.each([
   ["POST", "/api/game"],
-  ["GET", "/api/game/mine/1"],
   ["GET", "/api/game/1"],
   ["PATCH", "/api/game/1"],
-  ["PATCH", "/api/game/1/close"],
 ])("unauthenticated request respond 401", async (m, url) => {
   const response = await req(url)(m);
   expect(response.status).toBe(401);
@@ -64,13 +62,15 @@ describe("/api/game", () => {
     });
 
     test("with valid code should give back the game", async () => {
-      const response = await authReq(token)(`/api/game/${game1.code}`)("GET");
+      const response = await authReq(token)(`/api/game/code/${game1.code}`)(
+        "GET"
+      );
       const body = await response.json();
       expect(body).toEqual(game1);
     });
   });
 
-  describe("GET /api/game/mine/:id", () => {
+  describe("GET /api/game/:id", () => {
     let game1: Game;
     let game2: Game;
 
@@ -95,7 +95,7 @@ describe("/api/game", () => {
     ] as const;
 
     test.each(cases)("id = %p respond %p", async (getId, stat) => {
-      const response = await authReq(token)(`/api/game/mine/${getId()}`)("GET");
+      const response = await authReq(token)(`/api/game/${getId()}`)("GET");
       expect(response.status).toBe(stat);
     });
   });
@@ -109,7 +109,7 @@ describe("/api/game", () => {
     ] as const;
 
     test.each(cases)("code=%p respond %p", async (code, stat) => {
-      const response = await authReq(token)(`/api/game/${code}`)("GET");
+      const response = await authReq(token)(`/api/game/code/${code}`)("GET");
       expect(response.status).toBe(stat);
     });
   });
@@ -168,34 +168,5 @@ describe("/api/game", () => {
         expect(response.status).toBe(stat);
       }
     );
-  });
-
-  describe("PATCH /api/game/:id/close", () => {
-    let game1: Game;
-
-    beforeEach(async () => {
-      await db.delete(games).all();
-
-      const { id } = await getUserByEmail("test@test.com");
-
-      game1 = await createGame({
-        owner: id,
-      });
-    });
-
-    const cases = [
-      [() => game1.id, 200],
-      [() => "", 404],
-      [() => "abc", 400],
-      [() => 999, 404],
-    ] as const;
-
-    test.each(cases)("id = %p respond %p", async (getId, stat) => {
-      const response = await authReq(token)(`/api/game/${getId()}/close`)(
-        "PATCH"
-      );
-
-      expect(response.status).toBe(stat);
-    });
   });
 });

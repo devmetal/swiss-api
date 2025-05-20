@@ -1,19 +1,97 @@
-import { Hono } from "hono";
-import { z } from "zod";
-import { sign, jwt } from "hono/jwt";
+import { OpenAPIHono } from "@hono/zod-openapi";
+import { createRoute, z } from "@hono/zod-openapi";
+import { sign } from "hono/jwt";
 import { HTTPException } from "hono/http-exception";
 import { checkEmailAndPassword, createUser, isUserAlready } from "./service";
 import getUser from "./getUser";
-import { zValidator } from "@hono/zod-validator";
 
-const auth = new Hono();
+const auth = new OpenAPIHono();
 
-const authSchema = z.object({
+const AuthSchema = z.object({
   email: z.string().email(),
   password: z.string().min(3),
 });
 
-auth.post("/register", zValidator("json", authSchema), async (c) => {
+const UserSchema = z.object({
+  email: z.string().email(),
+  id: z.number(),
+});
+
+const TokenSchema = z.object({
+  token: z.string(),
+});
+
+const register = createRoute({
+  method: "post",
+  path: "/register",
+  request: {
+    body: {
+      content: {
+        "application/json": {
+          schema: AuthSchema,
+        },
+      },
+    },
+  },
+  responses: {
+    200: {
+      content: {
+        "application/json": {
+          schema: UserSchema,
+        },
+      },
+      description: "User created",
+    },
+  },
+});
+
+const login = createRoute({
+  method: "post",
+  path: "/login",
+  request: {
+    body: {
+      content: {
+        "application/json": {
+          schema: AuthSchema,
+        },
+      },
+    },
+  },
+  responses: {
+    200: {
+      content: {
+        "application/json": {
+          schema: TokenSchema,
+        },
+      },
+      description: "Auth token created",
+    },
+  },
+});
+
+const me = createRoute({
+  method: "get",
+  path: "/me",
+  request: {},
+  responses: {
+    200: {
+      content: {
+        "application/json": {
+          schema: UserSchema,
+        },
+      },
+      description: "Current user",
+    },
+  },
+  security: [
+    {
+      Bearer: [],
+    },
+  ],
+  middleware: [getUser] as const,
+});
+
+auth.openapi(register, async (c) => {
   const { email, password } = c.req.valid("json");
 
   if (await isUserAlready(email)) {
@@ -24,7 +102,7 @@ auth.post("/register", zValidator("json", authSchema), async (c) => {
   return c.json({ email: user.email, id: user.id });
 });
 
-auth.post("/login", zValidator("json", authSchema), async (c) => {
+auth.openapi(login, async (c) => {
   const { email, password } = c.req.valid("json");
   const user = await checkEmailAndPassword(email, password);
 
@@ -41,7 +119,7 @@ auth.post("/login", zValidator("json", authSchema), async (c) => {
   return c.json({ token });
 });
 
-auth.get("/me", jwt({ secret: Bun.env.SECRET }), getUser, async (c) => {
+auth.openapi(me, function (c) {
   const user = c.get("user");
   return c.json({ email: user.email, id: user.id });
 });
