@@ -1,26 +1,12 @@
 {
-  "version": "5",
+  "version": "7",
   "dialect": "sqlite",
   "entries": [
     {
       "idx": 0,
-      "version": "5",
-      "when": 1713133882677,
-      "tag": "0000_daffy_stardust",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1713193345322,
-      "tag": "0001_clumsy_thaddeus_ross",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1713210013261,
-      "tag": "0002_fast_hardball",
+      "version": "6",
+      "when": 1747834153344,
+      "tag": "0000_lively_vanisher",
       "breakpoints": true
     }
   ]

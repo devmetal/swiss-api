@@ -29,34 +29,22 @@ export const games = sqliteTable("games", {
 export const tables = sqliteTable("tables", {
   id: integer("id").primaryKey(),
   no: integer("no").notNull(),
-  label: text("label"),
-  gameId: integer("game_id")
-    .references(() => games.id, { onDelete: "cascade" })
-    .notNull(),
+  gameId: integer("game_id").notNull(),
 });
 
 export const rounds = sqliteTable("rounds", {
   id: integer("id").primaryKey(),
   no: integer("no").notNull(),
-  gameId: integer("game_id")
-    .references(() => games.id, { onDelete: "cascade" })
-    .notNull(),
+  gameId: integer("game_id").notNull(),
 });
 
 export const matches = sqliteTable("matches", {
   id: integer("id").primaryKey(),
-  no: integer("no").notNull(),
-  roundId: integer("round_id")
-    .references(() => rounds.id, { onDelete: "cascade" })
-    .notNull(),
-  playerA: integer("player_a")
-    .references(() => users.id, { onDelete: "cascade" })
-    .notNull(),
-  playerB: integer("player_b")
-    .references(() => users.id, { onDelete: "cascade" })
-    .notNull(),
-  playerAScore: integer("player_a_score").default(0),
-  playerBScore: integer("player_b_score").default(0),
+  seat: integer("seat").notNull(),
+  tableId: integer("table_id").notNull(),
+  roundId: integer("round_id").notNull(),
+  player: integer("player").notNull(),
+  score: integer("player_score").default(0),
 });
 
 export const usersToGames = sqliteTable(
@@ -75,6 +63,7 @@ export const usersToGames = sqliteTable(
 export const usersRelations = relations(users, ({ many }) => ({
   games: many(games),
   playing: many(usersToGames),
+  matches: many(matches),
 }));
 
 export const gamesRelations = relations(games, ({ one, many }) => ({
@@ -83,6 +72,8 @@ export const gamesRelations = relations(games, ({ one, many }) => ({
     references: [users.id],
   }),
   players: many(usersToGames),
+  tables: many(tables),
+  rounds: many(rounds),
 }));
 
 export const usersToGamesRelations = relations(usersToGames, ({ one }) => ({
@@ -93,6 +84,37 @@ export const usersToGamesRelations = relations(usersToGames, ({ one }) => ({
   game: one(games, {
     fields: [usersToGames.gameId],
     references: [games.id],
+  }),
+}));
+
+export const roundsRelations = relations(rounds, ({ one, many }) => ({
+  matches: many(matches),
+  game: one(games, {
+    fields: [rounds.gameId],
+    references: [games.id],
+  }),
+}));
+
+export const tablesRelations = relations(tables, ({ one, many }) => ({
+  matches: many(matches),
+  game: one(games, {
+    fields: [tables.gameId],
+    references: [games.id],
+  }),
+}));
+
+export const matchesRelations = relations(matches, ({ one }) => ({
+  table: one(tables, {
+    fields: [matches.tableId],
+    references: [tables.id],
+  }),
+  round: one(rounds, {
+    fields: [matches.roundId],
+    references: [rounds.id],
+  }),
+  player: one(users, {
+    fields: [matches.player],
+    references: [users.id],
   }),
 }));
 
