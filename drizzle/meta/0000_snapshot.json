@@ -1,8 +1,6 @@
 {
-  "version": "5",
+  "version": "6",
   "dialect": "sqlite",
-  "id": "791f5717-c155-4cdc-8af6-344b33065a7c",
-  "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "games": {
       "name": "games",
@@ -79,19 +77,20 @@
         "games_owner_users_id_fk": {
           "name": "games_owner_users_id_fk",
           "tableFrom": "games",
-          "tableTo": "users",
           "columnsFrom": [
             "owner"
           ],
+          "tableTo": "users",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "users": {
       "name": "users",
@@ -129,13 +128,16 @@
       },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     }
   },
   "enums": {},
   "_meta": {
-    "schemas": {},
     "tables": {},
     "columns": {}
-  }
+  },
+  "id": "791f5717-c155-4cdc-8af6-344b33065a7c",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "views": {}
 }

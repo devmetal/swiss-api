@@ -1,4 +1,4 @@
-import { sql } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
   sqliteTable,
   text,
@@ -23,9 +23,7 @@ export const games = sqliteTable("games", {
   label: text("label"),
   desc: text("desc"),
   code: text("code").notNull().unique(),
-  owner: integer("owner")
-    .references(() => users.id, { onDelete: "cascade" })
-    .notNull(),
+  owner: integer("owner").notNull(),
 });
 
 export const tables = sqliteTable("tables", {
@@ -71,10 +69,32 @@ export const usersToGames = sqliteTable(
       .references(() => games.id, { onDelete: "cascade" })
       .notNull(),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.gameId, table.userId] }),
-  })
+  (table) => [primaryKey({ columns: [table.userId, table.gameId] })]
 );
+
+export const usersRelations = relations(users, ({ many }) => ({
+  games: many(games),
+  playing: many(usersToGames),
+}));
+
+export const gamesRelations = relations(games, ({ one, many }) => ({
+  owner: one(users, {
+    fields: [games.owner],
+    references: [users.id],
+  }),
+  players: many(usersToGames),
+}));
+
+export const usersToGamesRelations = relations(usersToGames, ({ one }) => ({
+  player: one(users, {
+    fields: [usersToGames.userId],
+    references: [users.id],
+  }),
+  game: one(games, {
+    fields: [usersToGames.gameId],
+    references: [games.id],
+  }),
+}));
 
 export type User = typeof users.$inferSelect;
 export type Game = typeof games.$inferSelect;

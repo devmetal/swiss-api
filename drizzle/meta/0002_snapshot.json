@@ -1,8 +1,6 @@
 {
-  "version": "5",
+  "version": "6",
   "dialect": "sqlite",
-  "id": "eb03a734-7b23-4f07-9f70-d500c377b576",
-  "prevId": "909cc205-ec39-4eca-b85f-fefa2392aacc",
   "tables": {
     "games": {
       "name": "games",
@@ -86,19 +84,20 @@
         "games_owner_users_id_fk": {
           "name": "games_owner_users_id_fk",
           "tableFrom": "games",
-          "tableTo": "users",
           "columnsFrom": [
             "owner"
           ],
+          "tableTo": "users",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "matches": {
       "name": "matches",
@@ -160,45 +159,46 @@
         "matches_round_id_rounds_id_fk": {
           "name": "matches_round_id_rounds_id_fk",
           "tableFrom": "matches",
-          "tableTo": "rounds",
           "columnsFrom": [
             "round_id"
           ],
+          "tableTo": "rounds",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "matches_player_a_users_id_fk": {
           "name": "matches_player_a_users_id_fk",
           "tableFrom": "matches",
-          "tableTo": "users",
           "columnsFrom": [
             "player_a"
           ],
+          "tableTo": "users",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "matches_player_b_users_id_fk": {
           "name": "matches_player_b_users_id_fk",
           "tableFrom": "matches",
-          "tableTo": "users",
           "columnsFrom": [
             "player_b"
           ],
+          "tableTo": "users",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "rounds": {
       "name": "rounds",
@@ -230,19 +230,20 @@
         "rounds_game_id_games_id_fk": {
           "name": "rounds_game_id_games_id_fk",
           "tableFrom": "rounds",
-          "tableTo": "games",
           "columnsFrom": [
             "game_id"
           ],
+          "tableTo": "games",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "tables": {
       "name": "tables",
@@ -281,19 +282,20 @@
         "tables_game_id_games_id_fk": {
           "name": "tables_game_id_games_id_fk",
           "tableFrom": "tables",
-          "tableTo": "games",
           "columnsFrom": [
             "game_id"
           ],
+          "tableTo": "games",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "users": {
       "name": "users",
@@ -331,7 +333,8 @@
       },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "users_to_games": {
       "name": "users_to_games",
@@ -356,28 +359,28 @@
         "users_to_games_user_id_users_id_fk": {
           "name": "users_to_games_user_id_users_id_fk",
           "tableFrom": "users_to_games",
-          "tableTo": "users",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "users",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "users_to_games_game_id_games_id_fk": {
           "name": "users_to_games_game_id_games_id_fk",
           "tableFrom": "users_to_games",
-          "tableTo": "games",
           "columnsFrom": [
             "game_id"
           ],
+          "tableTo": "games",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -389,13 +392,16 @@
           "name": "users_to_games_game_id_user_id_pk"
         }
       },
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     }
   },
   "enums": {},
   "_meta": {
-    "schemas": {},
     "tables": {},
     "columns": {}
-  }
+  },
+  "id": "eb03a734-7b23-4f07-9f70-d500c377b576",
+  "prevId": "909cc205-ec39-4eca-b85f-fefa2392aacc",
+  "views": {}
 }
