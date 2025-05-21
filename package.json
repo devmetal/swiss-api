@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "scripts": {
     "server:dev": "cd server && bun dev",
-    "client:dev": "cd client && bun dev"
+    "client:dev": "cd client && bun dev",
+    "test:ci": "cd server && bun test:ci"
   },
   "workspaces": [
     "./server",
