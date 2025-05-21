@@ -1,5 +1,5 @@
 import { createRoute, OpenAPIHono } from "@hono/zod-openapi";
-import getUser from "@/auth/getUser";
+import getUser from "@server//auth/getUser";
 import {
   createGame,
   getGameByCode,

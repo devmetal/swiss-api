@@ -1,5 +1,5 @@
-import { db } from "@/database";
-import { games, type UpdateGameInput } from "@/schema";
+import { db } from "@server//database";
+import { games, type UpdateGameInput } from "@server//schema";
 import { and, eq } from "drizzle-orm";
 
 export async function getGamesByUserId(uid: number) {

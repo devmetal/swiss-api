@@ -1,10 +1,10 @@
 import { beforeAll, beforeEach, describe, test, expect } from "bun:test";
-import { rest } from "@/test/helper";
-import { app } from "@/index";
-import { getUserByEmail, getUserById } from "@/auth/service";
+import { rest } from "@server//test/helper";
+import { app } from "@server//index";
+import { getUserByEmail, getUserById } from "@server//auth/service";
 import { createGame } from "./service";
-import { Game, games } from "@/schema";
-import { db } from "@/database";
+import { Game, games } from "@server//schema";
+import { db } from "@server//database";
 
 const login = rest(app)("/api/auth/login")(null);
 

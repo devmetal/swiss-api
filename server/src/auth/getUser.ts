@@ -1,7 +1,7 @@
 import { HTTPException } from "hono/http-exception";
 import { createMiddleware } from "hono/factory";
 import { getUserById } from "./service";
-import { User } from "@/schema";
+import { User } from "@server//schema";
 import { verify } from "hono/jwt";
 
 const secret = Bun.env.SECRET;

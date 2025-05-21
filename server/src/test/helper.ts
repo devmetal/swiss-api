@@ -1,4 +1,4 @@
-import { AppType } from "@/index";
+import { AppType } from "@server//index";
 
 export const rest =
   (app: AppType) =>
